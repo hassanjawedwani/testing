@@ -1,0 +1,59 @@
+<%- layout("./layout/boilerplate.ejs") %>
+    <div class="container">
+      <form method="post" action="http://localhost:8080/signup" class="needs-validation mt-5" novalidate>
+        <div class="mb-3 col-lg-6 mx-auto">
+          <label for="email" class="form-label"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+            required
+            name="user[email]"
+          />
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please Enter Your Email Address
+          </div>
+        </div>
+        <div class="mb-3 col-lg-6 mx-auto">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            required
+            name="user[username]"
+          />
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please Enter Username          </div>
+        </div>
+        <div class="mb-3 col-lg-6 mx-auto">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            required
+            name="user[password]"
+          />
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please Enter a unique password
+          </div>
+        </div>
+        <div class="mb-3 col-lg-6 mx-auto text-center">
+          <button type="submit" class="btn btn-primary">SignUp</button>
+        </div>
+        
+      </form>
+    </div>

@@ -1,0 +1,116 @@
+<% layout("./layout/boilerplate.ejs") -%>
+<div class="container row">
+  <div class="col-lg-8" style="position: relative">
+    <h1 class="my-3">Edit Listing</h1>
+    <form
+      id="edit-listing-form"
+      method="post"
+      action="http://localhost:8080/listings/<%=list._id%>?_method=PUT"
+      class="needs-validation"
+      enctype="multipart/form-data"
+      novalidate
+    >
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          class="form-control"
+          id="title"
+          value="<%=list.title%>"
+          placeholder="Enter list title"
+          required
+        />
+        <div class="valid-feedback">good</div>
+        <div class="invalid-feedback">Please enter a eye catching title</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          name="description"
+          class="form-control"
+          id="description"
+          placeholder="Enter Description"
+          required
+        >
+<%=list.description%></textarea
+        >
+        <div class="valid-feedback">good</div>
+        <div class="invalid-feedback">
+          Please enter a description that describes your listing
+        </div>
+      </div>
+
+      <div>
+        <label  for="listing-image">
+          Previous Listing Image
+        </label><br />
+        <img id="listing-image" src="<%= modifiedImage %>" />
+      </div>
+
+      <div class="my-3">
+        <label class="form-label" for="image">Upload a new listing Image</label>
+        <input type="file" name="image" class="form-control" id="image" />
+        <div class="valid-feedback">good</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="price">Price</label>
+        <input
+          type="number"
+          name="price"
+          class="form-control"
+          id="price"
+          value="<%=list.price%>"
+          placeholder="Enter Price"
+          required
+        />
+        <div class="valid-feedback">good</div>
+        <div class="invalid-feedback">Please enter price for your listing</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          type="text"
+          name="location"
+          class="form-control"
+          id="location"
+          value="<%=list.location%>"
+          placeholder="Enter location"
+          required
+        />
+        <div class="valid-feedback">good</div>
+        <div class="invalid-feedback">Please enter location address</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="country">Country</label>
+        <input
+          type="text"
+          name="country"
+          class="form-control"
+          id="country"
+          value="<%=list.country%>"
+          placeholder="Enter country"
+          required
+        />
+        <div class="valid-feedback">good</div>
+        <div class="invalid-feedback">Please enter country name</div>
+      </div>
+
+      <button type="submit" class="btn custom-btn">Update</button>
+    </form>
+    <div id="edit-listing-loader" style="display: none" class="loader">
+      <h2>Please wait ...</h2>
+    </div>
+  </div>
+  <script>
+    document
+      .getElementById("edit-listing-form")
+      .addEventListener("submit", function () {
+        document.getElementById("edit-listing-loader").style.display = "flex";
+      });
+  </script>
+</div>

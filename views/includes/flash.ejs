@@ -1,0 +1,28 @@
+
+<% if(flashMessage && flashMessage.length) { %>
+
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flashMessage %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<% } %>
+<% if(flashErrorMessage && flashErrorMessage.length) { %>
+
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flashErrorMessage %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<% } %>
+
+
+<% if(error && error.length) { %>
+
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<% } %>
+

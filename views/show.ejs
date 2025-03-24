@@ -1,0 +1,187 @@
+<% layout("./layout/boilerplate") -%>
+
+<div class="container">
+  <div class="card mx-auto my-3" style="max-width: 40rem">
+    <img
+      src="<%=list.image.url%>"
+      class="card-img-top"
+      alt="<%=list.image.filename%>"
+      style="
+        max-height: 50vh;
+        width: 100%;
+        object-fit: cover;
+        object-position: top;
+      "
+    />
+    <div class="card-body">
+      <p class="card-text italic">Owned by <%=list.owner.username%></p>
+      <h5 class="card-title"><%=list.title%></h5>
+      <p class="card-text"><%=list.description%></p>
+      <p class="card-text">
+        <%=list.price.toLocaleString("en-IN")%> &#8360;<br />
+        <%=list.location%><br />
+        <%=list.country%><br />
+      </p>
+
+      <% if(user && list.owner._id.equals( user._id)) { %>
+
+      <div style="display: flex; gap: 2rem">
+        <form
+          method="get"
+          action="http://localhost:8080/listings/<%=list._id%>/edit"
+        >
+          <button type="submit" class="btn custom-btn">Edit</button>
+        </form>
+        <form
+          method="post"
+          action="http://localhost:8080/listings/<%=list._id%>?_method=DELETE"
+        >
+          <button type="submit" class="btn custom-btn">Delete Listing</button>
+        </form>
+      </div>
+
+      <% } %>
+
+      <hr />
+      <div id="map" style="height: 180px"></div>
+      <hr />
+      <div>
+        <h2>Leave a Review</h2>
+        <form
+          method="post"
+          action="http://localhost:8080/listings/<%=list._id%>/reviews"
+          class="needs-validation"
+          novalidate
+        >
+          <label for="rating" class="form-label mt-3">Rating</label>
+          <fieldset class="starability-grow" id="rating">
+            <input
+              type="radio"
+              id="no-rate"
+              class="input-no-rate"
+              name="review[rating]"
+              value="1"
+              checked
+              aria-label="No rating."
+            />
+            <input
+              type="radio"
+              id="first-rate1"
+              name="review[rating]"
+              value="1"
+            />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input
+              type="radio"
+              id="first-rate2"
+              name="review[rating]"
+              value="2"
+            />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input
+              type="radio"
+              id="first-rate3"
+              name="review[rating]"
+              value="3"
+            />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input
+              type="radio"
+              id="first-rate4"
+              name="review[rating]"
+              value="4"
+            />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input
+              type="radio"
+              id="first-rate5"
+              name="review[rating]"
+              value="5"
+            />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+          <div>
+            <label for="comment" class="form-label">Comment</label>
+            <textarea
+              id="comment"
+              rows="4"
+              name="review[comment]"
+              class="form-control mb-3"
+              placeholder="i.e. this place is wonderful"
+              required
+            ></textarea>
+            <div class="valid-feedback">good</div>
+            <div class="invalid-feedback">
+              Please enter your experience before add review
+            </div>
+          </div>
+
+          <button class="btn btn-outline-dark mb-3">Submit</button>
+        </form>
+      </div>
+      <hr />
+      <div class="d-flex flex-wrap gap-2 justify-content-between p-3">
+        <% for(const review of list.review) { %>
+        <div class="card" style="width: 16rem">
+          <div class="card-body">
+            <h5 class="card-title">@<%=review.owner.username%></h5>
+            <p class="starability-result" data-rating="<%=review.rating%>">
+              Rated: 3 stars
+            </p>
+            <p class="card-text"><%=review.comment%></p>
+            <% if(user && user._id.equals(review.owner._id)) { %>
+
+            <form
+              method="post"
+              action="http://localhost:8080/listings/<%=list._id%>/reviews/<%=review._id%>?_method=DELETE"
+            >
+              <button type="submit" class="btn btn-dark">Delete</button>
+            </form>
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <script>
+    async function getCoordinates(location) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+        location
+      )}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length > 0) {
+          const lat = data[0].lat;
+          const lon = data[0].lon;
+          console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+          return { lat, lon };
+        } else {
+          console.log("Location not found!");
+          return null;
+        }
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+      }
+    }
+
+    getCoordinates("<%=list.location%>").then((coords) => {
+      if (coords) {
+        var map = L.map("map").setView([coords.lat, coords.lon], 13);
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
+
+        L.marker([coords.lat, coords.lon])
+          .addTo(map)
+          .bindPopup("<%=list.location%>")
+          .openPopup();
+      }
+    });
+  </script>
+</div>
