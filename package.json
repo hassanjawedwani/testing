@@ -1,7 +1,5 @@
 {
-  "engines": {
-    "node": "v22.13.1"
-  },
+ 
   "name": "project-1",
   "version": "1.0.0",
   "main": "index.js",
